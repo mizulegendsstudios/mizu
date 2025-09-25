@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📝 Notas Compartidas - Editor + Espectadores</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      padding: 20px;
+      background: #f9f9f9;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h2 { text-align: center; margin-bottom: 20px; }
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+    button {
+      padding: 10px 16px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover { opacity: 0.9; }
+    textarea, #viewer {
+      width: 100%;
+      height: 60vh;
+      padding: 16px;
+      font-family: monospace;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: none;
+    }
+    #viewer {
+      background: white;
+      white-space: pre-wrap;
+      overflow: auto;
+    }
+    #manual-link {
+      margin-top: 20px;
+      padding: 12px;
+      background: #f1f1f1;
+      border: 1px dashed #999;
+      font-family: monospace;
+      font-size: 14px;
+      word-break: break-all;
+      user-select: text;
+    }
+  </style>
+</head>
+<body>
+  <h2>📝 Notas Compartidas</h2>
+  
+  <div class="controls">
+    <button id="editBtn">✏️ Modo Editor</button>
+    <button id="viewBtn">👁️ Modo Espectador</button>
+    <button id="shareBtn">🔗 Copiar enlace</button>
+  </div>
+
+  <textarea id="editor" placeholder="Modo editor: escribe aquí..."></textarea>
+  <div id="viewer" style="display:none;"></div>
+
+  <div id="manual-link" style="display:none;">
+    <strong>🔗 Enlace para compartir (copia manualmente):</strong><br>
+    <span id="link-text"></span>
+  </div>
+
+  <script>
+    const editor = document.getElementById('editor');
+    const viewer = document.getElementById('viewer');
+    const editBtn = document.getElementById('editBtn');
+    const viewBtn = document.getElementById('viewBtn');
+    const shareBtn = document.getElementById('shareBtn');
+    const manualLinkDiv = document.getElementById('manual-link');
+    const linkTextSpan = document.getElementById('link-text');
+
+    let isEditor = false;
+    let ignoreHashChange = false;
+
+    const encodeText = text => {
+      // Reemplazar ' para evitar problemas en URLs
+      return encodeURIComponent(text).replace(/'/g, '%27');
+    };
+    const decodeText = hash => {
+      try {
+        return decodeURIComponent(hash.replace(/^#/, ''));
+      } catch (e) {
+        return '';
+      }
+    };
+
+    const updateURL = () => {
+      if (!isEditor) return;
+      const text = editor.value;
+      const hash = text ? '#' + encodeText(text) : '';
+      ignoreHashChange = true;
+      history.replaceState(null, '', hash);
+      updateManualLink();
+    };
+
+    const updateManualLink = () => {
+      linkTextSpan.textContent = window.location.href;
+    };
+
+    const applyFromURL = () => {
+      const text = location.hash ? decodeText(location.hash) : '';
+      if (isEditor) {
+        editor.value = text;
+      } else {
+        viewer.textContent = text || 'Esperando contenido del editor...';
+      }
+    };
+
+    editBtn.addEventListener('click', () => {
+      isEditor = true;
+      editor.style.display = 'block';
+      viewer.style.display = 'none';
+      manualLinkDiv.style.display = 'block';
+      applyFromURL();
+      updateManualLink();
+    });
+
+    viewBtn.addEventListener('click', () => {
+      isEditor = false;
+      editor.style.display = 'none';
+      viewer.style.display = 'block';
+      manualLinkDiv.style.display = 'none';
+      applyFromURL();
+    });
+
+    shareBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        alert('✅ Enlace copiado al portapapeles.');
+      } catch (err) {
+        alert('⚠️ No se pudo copiar. Usa el enlace de abajo.');
+        manualLinkDiv.style.display = 'block';
+        updateManualLink();
+      }
+    });
+
+    editor.addEventListener('input', () => {
+      if (isEditor) {
+        updateURL();
+      }
+    });
+
+    window.addEventListener('hashchange', () => {
+      if (!ignoreHashChange) {
+        applyFromURL();
+      }
+      ignoreHashChange = false;
+    });
+
+    // Iniciar en modo espectador
+    viewBtn.click();
+
+    // Para espectadores: verificar cambios cada 2s (por si hashchange no se dispara)
+    setInterval(() => {
+      if (!isEditor) {
+        applyFromURL();
+      }
+    }, 2000);
+  </script>
+</body>
+</html>
