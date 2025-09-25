@@ -1,6 +1,3 @@
-### 📄 `README.md` actualizado
-
-```markdown
 # 💧 Mizu
 
 **Mizu** es un framework de JavaScript ES6 vanilla, minimalista y progresivo, diseñado desde cero para construir interfaces web con un enfoque radical en:
