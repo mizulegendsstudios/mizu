@@ -77,11 +77,11 @@ Ideal para aplicaciones de una sola página (SPA): llama `Mizu.iniciar()` tras a
 
 ### Opción 1: CDN (recomendado)
 ```html
-<script src="https://cdn.jsdelivr.net/gh/tu-usuario/mizu@mizu.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/mizulegendsstudios/mizu@v1.0.0/mizu.js"></script>
 ```
 
 ### Opción 2: Descarga local
-1. Descarga [`mizu.js`](https://cdn.jsdelivr.net/gh/tu-usuario/mizu@mizu.js)
+1. Descarga [`mizu.js`](https://cdn.jsdelivr.net/gh/mizulegendsstudios/mizu@v1.0.0/mizu.js)
 2. Guárdalo en tu proyecto
 3. Inclúyelo en tu HTML
 
