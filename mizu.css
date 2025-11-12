@@ -1,1 +1,1991 @@
+/* ===================================================================
+   MIZUCSS - Sistema de Diseño Global Completo v1.0
+   Contiene TODOS los estilos de las aplicaciones Mizu proporcionadas.
+   Organizado por aplicación para facilitar el mantenimiento y la
+   localización de componentes específicos.
+   
+   USO:
+   - Enlaza este archivo en tu HTML.
+   - Activa el tema oscuro añadiendo la clase "dark-theme" al <body>.
+   =================================================================== */
+
+/* -------------------------------------------------------------------
+   1. VARIABLES DE TEMA Y ESTILOS BASE COMUNES
+   ------------------------------------------------------------------- */
+:root {
+    /* Paleta de Colores Mizu (por defecto) */
+    --primary-color: #4361ee;
+    --primary-dark: #3a56d4;
+    --secondary-color: #7209b7;
+    --accent-color: #4cc9f0;
+    --success-color: #4bb543;
+    --error-color: #e63946;
+    --warning-color: #ff9e00;
+    --text-dark: #2b2d42;
+    --text-light: #8d99ae;
+    --bg-light: #f8f9fa;
+    --bg-white: #ffffff;
+    --shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 15px 30px rgba(0, 0, 0, 0.15);
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
+}
+
+/* Tema Oscuro (de la app de texto) */
+body.dark-theme {
+    --bg: #000; --text: #f0f0f0; --accent: #1a1a1a;
+    --modal-bg: #222; --modal-text: #fff; --select-bg: #333;
+    --button-bg: rgba(255,255,255,.2); --button-active: rgba(255,255,255,.4);
+    --switch-off: #555; --switch-on: #4CAF50; --switch-knob: #fff;
+    --text-area-bg: #222; --text-area-text: #e0e0e0; --main-text: #f0f0f0;
+    --ripple-color: rgba(255,255,255,0.5);
+    /* Mapeo al sistema Mizu */
+    --primary-color: #4CAF50;
+    --text-dark: var(--main-text);
+    --text-light: #bbb;
+    --bg-light: var(--text-area-bg);
+    --bg-white: var(--accent);
+    --body-bg: var(--bg);
+}
+
+/* Reset y estilos base comunes a casi todas las apps */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: var(--text-dark);
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Contenedor base común */
+.container {
+    background-color: var(--bg-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 30px;
+    width: 100%;
+    transition: var(--transition);
+}
+.container:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+/* Tipografía base común */
+h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+    text-align: center;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.subtitle {
+    color: var(--text-light);
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1rem;
+}
+
+/* -------------------------------------------------------------------
+   2. ESTILOS ESPECÍFICOS DE MIZU NOTES (App 1)
+   ------------------------------------------------------------------- */
+/* --- Componentes de la barra de herramientas --- */
+.toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.toolbar-btn {
+    padding: 10px 16px;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.toolbar-btn:hover { background: var(--primary-color); color: white; }
+.toolbar-btn.primary { background: var(--primary-color); color: white; }
+.toolbar-btn.primary:hover { background: var(--primary-dark); }
+.toolbar-btn.danger { border-color: var(--error-color); color: var(--error-color); }
+.toolbar-btn.danger:hover { background: var(--error-color); color: white; }
+
+/* --- Componentes de indicador de estado --- */
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--success-color);
+    animation: pulse 2s infinite;
+}
+.status-dot.offline { background: var(--error-color); }
+.status-dot.syncing { background: var(--warning-color); }
+
+/* --- Layout principal de Mizu Notes --- */
+.main-content {
+    flex: 1;
+    display: flex;
+    gap: 20px;
+    min-height: 0;
+    height: calc(100% - 120px);
+}
+.notes-sidebar {
+    width: 300px;
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+.notes-list {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+.note-item {
+    padding: 12px;
+    border-radius: var(--border-radius);
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    border-left: 4px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.note-item:hover { background: rgba(67, 97, 238, 0.1); }
+.note-item.active {
+    background: var(--primary-color);
+    color: white;
+    border-left-color: var(--secondary-color);
+}
+.note-icon { font-size: 1rem; width: 20px; text-align: center; }
+.note-content { flex: 1; min-width: 0; }
+.note-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.note-preview {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.note-date { font-size: 0.7rem; opacity: 0.5; margin-top: 4px; }
+.main-file-indicator { color: var(--success-color); font-size: 0.8rem; }
+
+/* --- Componentes del editor de código --- */
+.editor-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    min-width: 0;
+}
+.editor-tabs {
+    display: flex;
+    background: var(--bg-white);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding: 0 15px;
+}
+.editor-tab {
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: var(--transition);
+    font-weight: 500;
+    color: var(--text-light);
+}
+.editor-tab.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    background: rgba(67, 97, 238, 0.05);
+}
+.editor-container { flex: 1; display: flex; overflow: hidden; }
+.editor-wrapper { flex: 1; display: flex; flex-direction: column; position: relative; }
+.editor-header {
+    padding: 10px 15px;
+    background: var(--bg-white);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.editor-type { font-size: 0.8rem; color: var(--text-light); font-weight: 500; }
+.editor-main { flex: 1; display: flex; overflow: hidden; }
+.line-numbers {
+    background: var(--bg-light);
+    color: var(--text-light);
+    padding: 15px 8px;
+    text-align: right;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    user-select: none;
+    overflow-y: auto;
+    min-width: 50px;
+}
+.code-editor {
+    flex: 1;
+    border: none;
+    padding: 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    resize: none;
+    background: var(--bg-white);
+    color: var(--text-dark);
+    outline: none;
+    tab-size: 4;
+}
+
+/* --- Componentes de la vista previa --- */
+.preview-sidebar {
+    width: 400px;
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+.preview-header {
+    padding: 15px 20px;
+    background: var(--bg-white);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.preview-title { font-weight: 600; color: var(--text-dark); }
+.preview-actions { display: flex; gap: 8px; }
+.preview-btn {
+    padding: 6px 12px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: var(--transition);
+}
+.preview-btn:hover { background: var(--primary-dark); }
+.preview-frame { flex: 1; border: none; background: white; }
+
+/* --- Otros componentes de Mizu Notes --- */
+.search-box { position: relative; margin-bottom: 15px; }
+.search-input {
+    width: 100%;
+    padding: 10px 35px 10px 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+.search-input:focus { outline: none; border-color: var(--primary-color); }
+.search-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+}
+.stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+.stat-item { text-align: center; }
+.stat-number { font-size: 1.2rem; font-weight: 700; color: var(--primary-color); }
+.stat-label { font-size: 0.7rem; color: var(--text-light); }
+.auto-save {
+    font-size: 0.8rem;
+    color: var(--success-color);
+    opacity: 0;
+    transition: var(--transition);
+}
+.auto-save.visible { opacity: 1; }
+.file-type-selector { display: flex; gap: 5px; margin-top: 10px; }
+.file-type-btn {
+    padding: 4px 8px;
+    border: 1px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    transition: var(--transition);
+}
+.file-type-btn.active { background: var(--primary-color); color: white; }
+
+/* -------------------------------------------------------------------
+   3. ESTILOS ESPECÍFICOS DE MIZU KEYGEN (App 2)
+   ------------------------------------------------------------------- */
+/* --- Componentes de la calculadora --- */
+.calculator-display {
+    background-color: var(--bg-light);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 25px;
+    text-align: right;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.calculation {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    margin-bottom: 10px;
+    min-height: 1.5em;
+    word-wrap: break-word;
+}
+.result {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    min-height: 1.2em;
+    word-wrap: break-word;
+}
+.calculator-keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+.calc-btn {
+    background: var(--bg-light);
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 18px 10px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.calc-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    background: #e9ecef;
+}
+.calc-btn:active { transform: translateY(0); }
+.operator {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+}
+.operator:hover { background: linear-gradient(135deg, var(--primary-dark), var(--secondary-color)); }
+.equals {
+    background: linear-gradient(135deg, var(--success-color), #3a9c3a);
+    color: white;
+}
+.equals:hover { background: linear-gradient(135deg, #3a9c3a, #2d7a2d); }
+.clear {
+    background: linear-gradient(135deg, var(--error-color), #c53030);
+    color: white;
+}
+.clear:hover { background: linear-gradient(135deg, #c53030, #9b2c2c); }
+.span-2 { grid-column: span 2; }
+
+/* --- Animación específica de Keygen --- */
+@keyframes buttonPress {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+.calc-btn.pressed { animation: buttonPress 0.1s ease; }
+
+/* -------------------------------------------------------------------
+   4. ESTILOS ESPECÍFICOS DE LA APP DE HOJA DE CÁLCULO (App 3)
+   ------------------------------------------------------------------- */
+/* Nota: Esta app usa una paleta y estructura diferente. Se incluye tal cual. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+body.calculator-app { /* Clase para aplicar este tema específico */
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f6;
+    display: block; /* Reset de flex */
+    padding: 0;
+}
+.container.calculator-app { max-width: 90%; padding: 0; box-shadow: none; }
+.table-container {
+    overflow: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 70vh;
+}
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    background-color: white;
+}
+thead th, thead td {
+    background-color: #f9fafb;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+th, td {
+    border: 1px solid #e5e7eb;
+    padding: 0;
+    position: relative;
+    min-width: 80px;
+    height: 32px;
+    font-size: 14px;
+    text-align: center;
+}
+.row-header, .col-header {
+    background-color: #e5e7eb;
+    font-weight: 500;
+    user-select: none;
+    cursor: default;
+    z-index: 20;
+}
+.cell {
+    padding: 8px;
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    background-color: white;
+    text-align: left;
+    font-weight: inherit;
+    font-style: inherit;
+}
+.cell:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: -2px;
+    box-shadow: 0 0 0 2px #3b82f6;
+}
+.selected { background-color: #d1e5fd !important; }
+.resizer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    background-color: #3b82f6;
+    border-radius: 50%;
+    cursor: se-resize;
+    z-index: 30;
+}
+.col-resizer {
+    right: -4px;
+    top: 0;
+    width: 8px;
+    height: 100%;
+    cursor: col-resize;
+    border-radius: 0;
+    background-color: transparent;
+}
+.row-resizer {
+    bottom: -4px;
+    left: 0;
+    height: 8px;
+    width: 100%;
+    cursor: row-resize;
+    border-radius: 0;
+    background-color: transparent;
+}
+.resizer:hover { background-color: #1d4ed8; }
+.col-resizer:hover, .row-resizer:hover { background-color: #3b82f6; }
+.highlighted { background-color: #bfdbfe; }
+.comment-indicator {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    background-color: #f59e0b;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+}
+.chart-container {
+    width: 100%;
+    height: 300px;
+    margin-top: 20px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    align-items: center;
+    justify-content: center;
+}
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close:hover { color: black; }
+.suggestions {
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    max-height: 150px;
+    overflow-y: auto;
+    width: 100%;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.suggestion-item {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+.suggestion-item:hover { background-color: #f0f0f0; }
+.suggestion-item.active { background-color: #e0f2fe; }
+.formula-help {
+    position: absolute;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 12px;
+    width: 200px;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* -------------------------------------------------------------------
+   5. ESTILOS ESPECÍFICOS DE MIZU CODER (App 4)
+   ------------------------------------------------------------------- */
+/* --- Componentes del encabezado --- */
+.header {
+    background-color: var(--bg-white);
+    color: var(--text-dark);
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.header h1 {
+    flex-grow: 1;
+    margin-right: 1rem;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+.header-controls { display: flex; align-items: center; gap: 1rem; }
+.progress-bar {
+    width: 200px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--bg-light);
+    border-radius: 9999px;
+    height: 8px;
+    cursor: pointer;
+    outline: none;
+}
+.progress-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    border: 2px solid var(--primary-dark);
+    transition: var(--transition);
+}
+.progress-bar::-webkit-slider-thumb:hover {
+    background-color: var(--primary-dark);
+    transform: scale(1.1);
+}
+.progress-bar::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    border: 2px solid var(--primary-dark);
+    cursor: pointer;
+    transition: var(--transition);
+}
+.progress-bar::-moz-range-thumb:hover {
+    background-color: var(--primary-dark);
+    transform: scale(1.1);
+}
+.action-button {
+    padding: 8px 16px;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: var(--bg-white);
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+    border: none;
+    font-weight: 600;
+    box-shadow: 0 2px 5px rgba(67, 97, 238, 0.3);
+}
+.action-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(67, 97, 238, 0.4);
+    background: linear-gradient(135deg, var(--primary-dark), var(--secondary-color));
+}
+.save-indicator {
+    color: var(--text-light);
+    font-size: 0.875rem;
+    margin-left: 0.5rem;
+}
+.code-mode-selector { display: flex; align-items: center; margin-left: 1rem; gap: 0.5rem; }
+.mode-label { font-size: 0.875rem; color: var(--text-light); }
+.mode-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+.mode-switch input { opacity: 0; width: 0; height: 0; }
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-light);
+    transition: var(--transition);
+    border-radius: 24px;
+    border: 2px solid var(--text-light);
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: var(--text-light);
+    transition: var(--transition);
+    border-radius: 50%;
+}
+input:checked + .slider {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+input:checked + .slider:before {
+    transform: translateX(26px);
+    background-color: white;
+}
+
+/* --- Layout de Mizu Coder --- */
+.container.coder-app {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+    flex-direction: column;
+    height: calc(100vh - 73px);
+    padding: 10px;
+    gap: 10px;
+    max-width: 100%;
+}
+.editor-container.coder-app {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: var(--bg-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: var(--transition);
+}
+.preview-container.coder-app {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    width: 100%;
+    background-color: var(--bg-white);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    position: relative;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+.preview-frame { width: 100%; flex-grow: 1; border: none; background-color: white; }
+.debug-info {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: var(--border-radius);
+    font-size: 12px;
+    z-index: 1000;
+}
+.separated-mode-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    z-index: 100;
+    box-shadow: var(--shadow-hover);
+    animation: pulse 2s infinite;
+}
+
+/* --- Componentes de la consola --- */
+.console-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background-color: var(--bg-white);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+.console-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+}
+.console-title { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; }
+.console-controls button {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+.console-controls button:hover {
+    color: var(--primary-color);
+    background-color: rgba(67, 97, 238, 0.1);
+}
+.console-content {
+    height: 100%;
+    overflow-y: auto;
+    padding: 15px;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.875rem;
+    color: var(--text-dark);
+    background-color: var(--bg-white);
+    flex-grow: 1;
+}
+.log-entry {
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    border-radius: var(--border-radius);
+    background-color: var(--bg-light);
+    border-left: 4px solid transparent;
+}
+.log-entry.info {
+    border-left-color: var(--primary-color);
+    background-color: rgba(67, 97, 238, 0.1);
+}
+.log-entry.warn {
+    border-left-color: var(--warning-color);
+    background-color: rgba(255, 158, 0, 0.1);
+}
+.log-entry.error {
+    border-left-color: var(--error-color);
+    background-color: rgba(230, 57, 70, 0.1);
+}
+
+/* -------------------------------------------------------------------
+   6. ESTILOS ESPECÍFICOS DEL GENERADOR DE CONTRASEÑAS (App 5)
+   ------------------------------------------------------------------- */
+/* --- Componentes de contraseña y seguridad --- */
+.password-container {
+    display: flex;
+    margin-bottom: 25px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+#passwordOutput {
+    flex-grow: 1;
+    padding: 15px 20px;
+    font-size: 1.1rem;
+    font-family: 'Courier New', monospace;
+    background-color: var(--bg-light);
+    border: none;
+    color: var(--text-dark);
+    outline: none;
+}
+#copyButton {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0 20px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#copyButton:hover:not(:disabled) { background-color: var(--primary-dark); }
+#copyButton:disabled { background-color: var(--text-light); cursor: not-allowed; }
+.security-indicator {
+    margin-top: 10px;
+    height: 6px;
+    border-radius: 3px;
+    background-color: #e0e0e0;
+    overflow: hidden;
+}
+.security-bar {
+    height: 100%;
+    width: 0%;
+    transition: var(--transition);
+    border-radius: 3px;
+}
+.security-weak { background-color: var(--error-color); width: 33%; }
+.security-medium { background-color: var(--warning-color); width: 66%; }
+.security-strong { background-color: var(--success-color); width: 100%; }
+.security-text {
+    font-size: 0.8rem;
+    text-align: right;
+    margin-top: 5px;
+    color: var(--text-light);
+}
+
+/* --- Componentes de opciones --- */
+.preset-button-container { margin-bottom: 15px; }
+#jwtPresetButton {
+    width: 100%;
+    padding: 14px;
+    background-color: transparent;
+    color: var(--secondary-color);
+    border: 2px solid var(--secondary-color);
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+#jwtPresetButton:hover {
+    background-color: var(--secondary-color);
+    color: white;
+    transform: translateY(-1px);
+}
+#jwtPresetButton.reset-mode {
+    color: var(--warning-color);
+    border-color: var(--warning-color);
+}
+#jwtPresetButton.reset-mode:hover {
+    background-color: var(--warning-color);
+    color: white;
+}
+#generateButton {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+    margin-bottom: 25px;
+}
+#generateButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
+}
+#generateButton:active { transform: translateY(0); }
+.length-control {
+    background-color: var(--bg-light);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    margin-bottom: 25px;
+}
+.length-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+#lengthValue {
+    color: var(--primary-color);
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+.slider-container {
+    position: relative;
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    margin: 20px 0;
+    cursor: pointer;
+}
+.slider-track {
+    position: absolute;
+    height: 100%;
+    background: var(--primary-color);
+    border-radius: 4px;
+    width: 40%;
+    transition: width 0.1s ease;
+}
+#lengthSlider {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+.slider-thumb {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+    z-index: 3;
+    cursor: grab;
+    touch-action: none;
+}
+.slider-thumb:hover { transform: translate(-50%, -50%) scale(1.1); }
+.slider-thumb:active {
+    cursor: grabbing;
+    transform: translate(-50%, -50%) scale(1.2);
+}
+.slider-thumb.dragging {
+    cursor: grabbing;
+    transform: translate(-50%, -50%) scale(1.2);
+}
+.options-container {
+    background-color: var(--bg-light);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    margin-bottom: 25px;
+}
+.options-title { font-weight: 600; color: var(--text-dark); margin-bottom: 15px; }
+.option-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+.option-item:last-child { border-bottom: none; }
+.checkbox-container {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+.checkbox-container input { opacity: 0; width: 0; height: 0; }
+.checkbox-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: var(--transition);
+    border-radius: 34px;
+}
+.checkbox-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: var(--transition);
+    border-radius: 50%;
+}
+input:checked + .checkbox-slider { background-color: var(--primary-color); }
+input:checked + .checkbox-slider:before { transform: translateX(24px); }
+.custom-chars-container {
+    background-color: var(--bg-light);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    margin-bottom: 25px;
+}
+.custom-input-group { margin-bottom: 15px; }
+.custom-input-group:last-child { margin-bottom: 0; }
+.custom-input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+.custom-input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+}
+.custom-input-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+.input-help {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-top: 5px;
+}
+
+/* -------------------------------------------------------------------
+   7. ESTILOS ESPECÍFICOS DE LA APP DE TAREAS (App 6)
+   ------------------------------------------------------------------- */
+/* --- Componentes de la lista de tareas --- */
+.input-container { display: flex; gap: 12px; margin-bottom: 25px; }
+#taskInput {
+    flex-grow: 1;
+    padding: 15px 20px;
+    border: 2px solid #e0e0e0;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+    background-color: var(--bg-light);
+}
+#taskInput:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+#addButton {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 15px 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+    white-space: nowrap;
+}
+#addButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
+    background: linear-gradient(135deg, var(--primary-dark), var(--secondary-color));
+}
+#addButton:active { transform: translateY(0); }
+
+/* --- Componentes de filtros y estadísticas --- */
+.filters { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+.filter-btn {
+    padding: 10px 20px;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    flex: 1;
+    min-width: 80px;
+}
+.filter-btn.active { background: var(--primary-color); color: white; }
+.filter-btn:hover:not(.active) { background: rgba(67, 97, 238, 0.1); }
+.stats {
+    display: flex;
+    justify-content: space-between;
+    background: var(--bg-light);
+    padding: 15px;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+.stat-item { text-align: center; flex: 1; }
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+.stat-label { color: var(--text-light); font-size: 0.8rem; }
+
+/* --- Componentes de la lista de tareas --- */
+.tasks-container { max-height: 400px; overflow-y: auto; margin-bottom: 20px; }
+.task-item {
+    background: var(--bg-light);
+    padding: 15px;
+    border-radius: var(--border-radius);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: var(--transition);
+    border-left: 4px solid transparent;
+}
+.task-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.task-item.completed {
+    opacity: 0.7;
+    border-left-color: var(--success-color);
+}
+.task-item.completed .task-text {
+    text-decoration: line-through;
+    color: var(--text-light);
+}
+.task-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--text-light);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+.task-checkbox.checked {
+    background: var(--success-color);
+    border-color: var(--success-color);
+}
+.task-checkbox.checked::after {
+    content: '✓';
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+.task-text { flex-grow: 1; font-size: 1rem; }
+.task-actions {
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transition: var(--transition);
+}
+.task-item:hover .task-actions { opacity: 1; }
+.task-action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 4px;
+    transition: var(--transition);
+    color: var(--text-light);
+}
+.task-action-btn:hover { background: rgba(0, 0, 0, 0.1); color: var(--text-dark); }
+.delete-btn:hover { color: var(--error-color); }
+.edit-btn:hover { color: var(--primary-color); }
+
+/* --- Componentes de acciones globales --- */
+.global-actions { display: flex; gap: 10px; margin-top: 20px; }
+.action-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.clear-completed {
+    background: transparent;
+    border: 2px solid var(--warning-color);
+    color: var(--warning-color);
+}
+.clear-completed:hover:not(:disabled) {
+    background: var(--warning-color);
+    color: white;
+}
+.clear-all {
+    background: transparent;
+    border: 2px solid var(--error-color);
+    color: var(--error-color);
+}
+.clear-all:hover:not(:disabled) {
+    background: var(--error-color);
+    color: white;
+}
+.action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* -------------------------------------------------------------------
+   8. ESTILOS ESPECÍFICOS DEL CONVERTIDOR DE UNIDADES (App 7)
+   ------------------------------------------------------------------- */
+/* --- Componentes del selector de categoría --- */
+.category-selector { margin-bottom: 25px; }
+.category-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.category-btn {
+    padding: 12px 8px;
+    border: 2px solid var(--bg-light);
+    background: var(--bg-light);
+    color: var(--text-dark);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+}
+.category-btn.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+.category-btn:hover:not(.active) {
+    border-color: var(--primary-color);
+    background: rgba(67, 97, 238, 0.1);
+}
+
+/* --- Componentes del contenedor de conversión --- */
+.conversion-container {
+    background: var(--bg-light);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+}
+.input-group { margin-bottom: 20px; }
+.input-group:last-child { margin-bottom: 0; }
+.input-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+.input-with-select { display: flex; gap: 12px; }
+.number-input {
+    flex: 1;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: var(--border-radius);
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: right;
+    transition: var(--transition);
+    background: white;
+}
+.number-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+.unit-select {
+    min-width: 120px;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    background: white;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.unit-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+.conversion-arrow {
+    text-align: center;
+    margin: 15px 0;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* --- Componentes de botones de acción --- */
+.action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 25px;
+}
+.action-btn {
+    padding: 16px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.convert-btn {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+}
+.convert-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
+    background: linear-gradient(135deg, var(--primary-dark), var(--secondary-color));
+}
+.swap-btn {
+    background: transparent;
+    border: 2px solid var(--warning-color);
+    color: var(--warning-color);
+}
+.swap-btn:hover {
+    background: var(--warning-color);
+    color: white;
+}
+
+/* --- Componentes del historial --- */
+.history-section { margin-top: 25px; }
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.history-title { font-weight: 600; color: var(--text-dark); }
+.clear-history {
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+.clear-history:hover { color: var(--error-color); }
+.history-list {
+    max-height: 200px;
+    overflow-y: auto;
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    padding: 15px;
+}
+.history-item {
+    padding: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.history-item:last-child { border-bottom: none; }
+.history-conversion { font-weight: 600; color: var(--text-dark); }
+.history-value {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+.empty-history {
+    text-align: center;
+    color: var(--text-light);
+    padding: 20px;
+    font-style: italic;
+}
+
+/* --- Animación específica --- */
+@keyframes resultUpdate {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+}
+.result-updated { animation: resultUpdate 0.3s ease; }
+
+/* -------------------------------------------------------------------
+   9. ESTILOS ESPECÍFICOS DE LA APP DE PROCESAMIENTO DE TEXTO (App 8)
+   ------------------------------------------------------------------- */
+/* Nota: Esta app usa una convención de nombres diferente. Se incluye tal cual. */
+body.text-processor-app {
+    font-family: 'Helvetica Neue',Calibri,'Segoe UI',Arial,sans-serif;
+    background-color: #f5f7ff;
+    color: var(--dark);
+    line-height: 1.6;
+    padding: 20px;
+    display: block; /* Reset de flex */
+}
+.container.text-processor-app {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+header.text-processor-app {
+    text-align: center;
+    margin-bottom: 30px;
+}
+h1.text-processor-app { color: var(--primary); margin-bottom: 10px; }
+.subtitle.text-processor-app { color: var(--gray); font-size: 1.1rem; }
+.input-section, .output-section { margin-bottom: 30px; }
+h2.text-processor-app {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    color: var(--secondary);
+    display: flex;
+    align-items: center;
+}
+h2.text-processor-app i { margin-right: 10px; }
+textarea.text-processor-app {
+    width: 100%;
+    min-height: 150px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    resize: vertical;
+    transition: border-color 0.3s;
+}
+textarea.text-processor-app:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+}
+.stats.text-processor-app {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    color: var(--gray);
+    font-size: 14px;
+}
+.output-container { position: relative; }
+.copy-btn.text-processor-app {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+}
+.copy-btn.text-processor-app:hover { background: var(--secondary); }
+.copy-btn.text-processor-app i { margin-right: 5px; }
+.performance.text-processor-app {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 30px;
+}
+.performance.text-processor-app h3 { margin-bottom: 15px; color: var(--secondary); }
+.metrics.text-processor-app {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+.metric-card.text-processor-app {
+    background: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+.metric-title.text-processor-app {
+    font-size: 14px;
+    color: var(--gray);
+    margin-bottom: 5px;
+}
+.metric-value.text-processor-app {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary);
+}
+.comparison.text-processor-app {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.comparison-card.text-processor-app {
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+}
+.comparison-card.text-processor-app.heavy {
+    background: #ffeaea;
+    color: var(--danger);
+}
+.comparison-card.text-processor-app.light {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+.comparison-title.text-processor-app {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.comparison-value.text-processor-app {
+    font-size: 20px;
+    font-weight: bold;
+}
+.token-badge.text-processor-app {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-left: 10px;
+}
+footer.text-processor-app {
+    text-align: center;
+    margin-top: 30px;
+    color: var(--gray);
+    font-size: 14px;
+}
+
+/* -------------------------------------------------------------------
+   10. ESTILOS ESPECÍFICOS DEL CALENDARIO (App 9)
+   ------------------------------------------------------------------- */
+/* --- Componentes de los controles del calendario --- */
+.calendar-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding: 15px;
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+}
+.month-year {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+.nav-buttons { display: flex; gap: 10px; }
+.nav-btn {
+    padding: 10px 16px;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.nav-btn:hover { background: var(--primary-color); color: white; }
+.view-buttons { display: flex; gap: 5px; }
+.view-btn {
+    padding: 8px 16px;
+    border: 2px solid var(--text-light);
+    background: transparent;
+    color: var(--text-light);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+}
+.view-btn.active {
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+    color: white;
+}
+
+/* --- Componentes de la cuadrícula del calendario --- */
+.calendar-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    margin-bottom: 10px;
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+.day-header {
+    padding: 15px 10px;
+    text-align: center;
+    font-weight: 700;
+    color: var(--text-dark);
+    background: var(--primary-color);
+    color: white;
+}
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    min-height: 500px;
+}
+.calendar-day {
+    background: white;
+    padding: 12px 8px;
+    min-height: 100px;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+}
+.calendar-day:hover {
+    background: rgba(67, 97, 238, 0.05);
+    transform: translateY(-2px);
+}
+.calendar-day.other-month {
+    background: #f8f9fa;
+    color: var(--text-light);
+}
+.calendar-day.today {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+.calendar-day.selected { background: var(--accent-color); color: white; }
+.day-number {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+.events-container {
+    max-height: 60px;
+    overflow-y: auto;
+    margin-top: 5px;
+}
+.event {
+    font-size: 0.7rem;
+    padding: 2px 4px;
+    margin: 1px 0;
+    border-radius: 3px;
+    background: var(--success-color);
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.event.work { background: var(--primary-color); }
+.event.personal { background: var(--secondary-color); }
+.event.important { background: var(--error-color); }
+.current-month { border: 2px solid var(--primary-color); }
+
+/* --- Componentes del modal de eventos --- */
+.modal-calendar {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+.modal-content-calendar {
+    background-color: white;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    width: 500px;
+    max-width: 90%;
+    box-shadow: var(--shadow-hover);
+}
+.modal-content-calendar h3 { margin-bottom: 20px; color: var(--text-dark); }
+.form-group { margin-bottom: 20px; }
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+.form-control {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    transition: var(--transition);
+}
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.color-options { display: flex; gap: 10px; margin-top: 5px; }
+.color-option {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: var(--transition);
+}
+.color-option.selected {
+    border-color: var(--text-dark);
+    transform: scale(1.1);
+}
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+    justify-content: flex-end;
+}
+.btn-calendar {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.btn-primary-calendar {
+    background: var(--primary-color);
+    color: white;
+}
+.btn-primary-calendar:hover { background: var(--primary-dark); }
+.btn-secondary-calendar {
+    background: var(--bg-light);
+    color: var(--text-dark);
+}
+.btn-secondary-calendar:hover { background: #e9ecef; }
+.btn-danger-calendar {
+    background: var(--error-color);
+    color: white;
+}
+.btn-danger-calendar:hover { background: #c53030; }
+
+/* --- Componentes de la lista de eventos del día --- */
+.day-events {
+    margin-top: 20px;
+    padding: 20px;
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    display: none;
+}
+.day-events h3 { margin-bottom: 15px; color: var(--text-dark); }
+.events-list { max-height: 200px; overflow-y: auto; }
+.event-item {
+    padding: 12px;
+    background: white;
+    border-radius: var(--border-radius);
+    margin-bottom: 10px;
+    border-left: 4px solid var(--success-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.event-item.work { border-left-color: var(--primary-color); }
+.event-item.personal { border-left-color: var(--secondary-color); }
+.event-item.important { border-left-color: var(--error-color); }
+.event-time {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    min-width: 80px;
+}
+.event-actions { display: flex; gap: 8px; }
+.event-action {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: var(--transition);
+    color: var(--text-light);
+}
+.event-action:hover {
+    background: rgba(0,0,0,0.1);
+    color: var(--text-dark);
+}
+
+/* --- Componentes del mini calendario --- */
+.mini-calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    margin-top: 20px;
+}
+.mini-day {
+    padding: 8px 4px;
+    text-align: center;
+    background: white;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+.mini-day:hover { background: rgba(67, 97, 238, 0.1); }
+.mini-day.today {
+    background: var(--primary-color);
+    color: white;
+}
+.mini-day.has-events::after {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 4px;
+    background: var(--success-color);
+    border-radius: 50%;
+    margin: 2px auto 0;
+}
+
+/* -------------------------------------------------------------------
+   11. UTILIDADES Y ANIMACIONES GLOBALES
+   ------------------------------------------------------------------- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+@keyframes ripple {
+    0% { transform: scale(0, 0); opacity: 0.5; }
+    100% { transform: scale(20, 20); opacity: 0; }
+}
+
+/* --- Componentes de estado y mensajes --- */
+#messageBox, .message {
+    margin-top: 20px;
+    padding: 12px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    font-weight: 500;
+    display: none;
+}
+.message-success, .message--success {
+    background-color: rgba(75, 181, 67, 0.1);
+    color: var(--success-color);
+    display: block;
+}
+.message-error, .message--error {
+    background-color: rgba(230, 57, 70, 0.1);
+    color: var(--error-color);
+    display: block;
+}
+.message-warning, .message--warning {
+    background-color: rgba(255, 158, 0, 0.1);
+    color: var(--warning-color);
+    display: block;
+}
+
+.empty-state {
+    text-align: center;
+    color: var(--text-light);
+    padding: 40px 20px;
+}
+.empty-state-icon { font-size: 3rem; margin-bottom: 15px; opacity: 0.5; }
+
+/* --- Estilos de foco y scrollbars --- */
+input:focus, button:focus, textarea:focus, select:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-light); border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
+
+/* -------------------------------------------------------------------
+   12. DISEÑO RESPONSIVO GLOBAL
+   ------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+    .container { height: auto; min-height: 90vh; }
+    .main-content { flex-direction: column; }
+    .notes-sidebar, .preview-sidebar {
+        width: 100%;
+        max-height: 300px;
+    }
+    .toolbar { flex-direction: column; align-items: stretch; }
+    .status-indicator { margin-left: 0; justify-content: center; }
+}
+@media (max-width: 768px) {
+    .container { padding: 20px; }
+    h1 { font-size: 1.5rem; }
+    .subtitle { font-size: 0.9rem; }
+    .metrics, .comparison, .action-buttons, .form-row {
+        grid-template-columns: 1fr;
+    }
+    .calendar-controls { flex-direction: column; gap: 15px; }
+    .nav-buttons { order: -1; }
+    .calendar-day { min-height: 80px; padding: 8px 4px; }
+    .day-number { font-size: 1rem; }
+    .event { font-size: 0.6rem; }
+    .input-with-select { flex-direction: column; }
+    .unit-select { min-width: auto; }
+}
+@media (max-width: 480px) {
+    .container { padding: 15px; }
+    .category-buttons { grid-template-columns: 1fr; }
+    .filters { flex-direction: column; }
+    .global-actions { flex-direction: column; }
+    .task-actions { opacity: 1; }
+}
+@media (max-width: 320px) {
+    .buttons button { flex: 1 1 100%; }
+}
 
