@@ -1,12 +1,7 @@
 /* ===================================================================
-   MIZUCSS - Sistema de Diseño Global Completo v1.0
-   Contiene TODOS los estilos de las aplicaciones Mizu proporcionadas.
-   Organizado por aplicación para facilitar el mantenimiento y la
-   localización de componentes específicos.
-   
-   USO:
-   - Enlaza este archivo en tu HTML.
-   - Activa el tema oscuro añadiendo la clase "dark-theme" al <body>.
+   MIZUCSS - Sistema de Diseño Global v2.0
+   ACTUALIZACIÓN INTEGRAL REAL: El layout de la app Frontend/IDE es ahora el
+   predeterminado para .container, manteniendo TODOS los estilos de las demás apps.
    =================================================================== */
 
 /* -------------------------------------------------------------------
@@ -64,43 +59,359 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    padding: 20px;
+    padding: 10px; /* Padding del layout principal */
+    margin: 0;
 }
 
-/* Contenedor base común */
+/* -------------------------------------------------------------------
+   2. LAYOUT PRINCIPAL (APP FRONDEND/IDE - AHORA ES EL POR DEFECTO)
+   ------------------------------------------------------------------- */
+/* El contenedor principal ahora usa el layout de la app Frontend por defecto */
 .container {
     background-color: var(--bg-white);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
-    padding: 30px;
+    height: calc(100vh - 20px);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     width: 100%;
+    max-width: 100%; /* Ocupa todo el ancho en este layout */
     transition: var(--transition);
 }
 .container:hover {
     box-shadow: var(--shadow-hover);
 }
 
-/* Tipografía base común */
-h1 {
-    font-size: 1.8rem;
+/* --- Componentes del Layout Principal --- */
+.header {
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.header h1 {
+    font-size: 1.5rem;
     font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 10px;
-    text-align: center;
     background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
 }
-.subtitle {
+
+.main-content {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+/* Panel lateral - Explorador */
+.explorer-panel {
+    width: 300px;
+    background: var(--bg-light);
+    border-right: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.explorer-header {
+    padding: 15px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.search-box { position: relative; }
+.search-input, .form-input {
+    width: 100%;
+    padding: 10px 35px 10px 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: var(--transition);
+    background: var(--bg-white);
+    color: var(--text-dark);
+}
+.search-input:focus, .form-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+.search-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
     color: var(--text-light);
+}
+.files-list, .notes-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+}
+.file-item, .note-item {
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    border-left: 4px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.file-item:hover, .note-item:hover {
+    background: rgba(67, 97, 238, 0.1);
+}
+.file-item.active, .note-item.active {
+    background: var(--primary-color);
+    color: white;
+    border-left-color: var(--secondary-color);
+}
+.file-icon, .note-icon {
+    font-size: 1.2rem;
+    width: 24px;
     text-align: center;
-    margin-bottom: 25px;
-    font-size: 1rem;
+}
+.file-info, .note-content {
+    flex: 1;
+    min-width: 0;
+}
+.file-name, .note-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.main-file-indicator {
+    color: gold;
+    font-size: 0.9rem;
+}
+.file-preview, .note-preview {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Área central - Editor */
+.editor-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: var(--bg-white);
+}
+.editor-tabs {
+    display: flex;
+    background: var(--bg-light);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.editor-tab, .tab-button {
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: var(--transition);
+    font-weight: 500;
+    color: var(--text-light);
+}
+.editor-tab.active, .tab-button--active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    background: var(--bg-white);
+}
+.editor-container {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+.editor-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.editor-header {
+    padding: 10px 15px;
+    background: var(--bg-white);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.file-type {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.type-buttons {
+    display: flex;
+    gap: 5px;
+}
+.type-btn, .file-type-btn {
+    padding: 4px 8px;
+    border: 1px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    transition: var(--transition);
+}
+.type-btn.active, .file-type-btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+.editor-main {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+.line-numbers {
+    background: var(--bg-light);
+    color: var(--text-light);
+    padding: 15px 8px;
+    text-align: right;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    user-select: none;
+    overflow-y: auto;
+    min-width: 50px;
+}
+.code-editor {
+    flex: 1;
+    border: none;
+    padding: 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    resize: none;
+    background: var(--bg-white);
+    color: var(--text-dark);
+    outline: none;
+    tab-size: 4;
+}
+.editor-footer {
+    padding: 10px 15px;
+    background: var(--bg-light);
+    border-top: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+.stats {
+    display: flex;
+    gap: 15px;
+}
+.auto-save {
+    color: var(--success-color);
+    opacity: 0;
+    transition: var(--transition);
+}
+.auto-save.visible { opacity: 1; }
+
+/* Panel de vista previa */
+.preview-panel {
+    width: 400px;
+    background: var(--bg-light);
+    border-left: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.preview-header {
+    padding: 15px;
+    background: var(--bg-white);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.preview-title {
+    font-weight: 600;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.preview-frame {
+    flex: 1;
+    border: none;
+    background: var(--bg-white);
 }
 
 /* -------------------------------------------------------------------
-   2. ESTILOS ESPECÍFICOS DE MIZU NOTES (App 1)
+   3. SISTEMA DE BOTONES Y FORMULARIOS
+   ------------------------------------------------------------------- */
+.btn, .mizu-btn, .toolbar-btn, .action-btn {
+    padding: 10px 16px;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-decoration: none;
+}
+.btn:hover, .mizu-btn:hover, .toolbar-btn:hover, .action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn--primary, .mizu-btn-primary, .toolbar-btn.primary, .action-button {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+.btn--primary:hover, .mizu-btn-primary:hover, .toolbar-btn.primary:hover, .action-button:hover { background: var(--primary-dark); }
+.btn--success, .mizu-btn-success {
+    background: var(--success-color);
+    color: white;
+    border-color: var(--success-color);
+}
+.btn--danger, .mizu-btn-danger, .toolbar-btn.danger {
+    border-color: var(--error-color);
+    color: var(--error-color);
+}
+.btn--danger:hover, .mizu-btn-danger:hover, .toolbar-btn.danger:hover {
+    background: var(--error-color);
+    color: white;
+}
+.btn--warning, .mizu-btn-warning {
+    border-color: var(--warning-color);
+    color: var(--warning-color);
+}
+.btn--warning:hover, .mizu-btn-warning:hover {
+    background: var(--warning-color);
+    color: white;
+}
+.btn--full { width: 100%; }
+
+/* -------------------------------------------------------------------
+   4. ESTILOS ESPECÍFICOS DE MIZU NOTES (App 1)
    ------------------------------------------------------------------- */
 /* --- Componentes de la barra de herramientas --- */
 .toolbar {
@@ -149,185 +460,36 @@ h1 {
 .status-dot.offline { background: var(--error-color); }
 .status-dot.syncing { background: var(--warning-color); }
 
-/* --- Layout principal de Mizu Notes --- */
-.main-content {
-    flex: 1;
-    display: flex;
+/* --- Layout principal de Mizu Notes (ahora es un modificador) --- */
+.container.notes-app {
+    padding: 30px;
+    max-width: 1400px;
+    height: 95vh;
+}
+.container.notes-app .main-content {
     gap: 20px;
-    min-height: 0;
     height: calc(100% - 120px);
 }
-.notes-sidebar {
+.container.notes-app .notes-sidebar {
     width: 300px;
     background: var(--bg-light);
     border-radius: var(--border-radius);
     padding: 20px;
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
+    border-right: none;
 }
-.notes-list {
-    flex: 1;
-    overflow-y: auto;
-    margin-bottom: 15px;
-}
-.note-item {
-    padding: 12px;
-    border-radius: var(--border-radius);
-    margin-bottom: 8px;
-    cursor: pointer;
-    transition: var(--transition);
-    border-left: 4px solid transparent;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.note-item:hover { background: rgba(67, 97, 238, 0.1); }
-.note-item.active {
-    background: var(--primary-color);
-    color: white;
-    border-left-color: var(--secondary-color);
-}
-.note-icon { font-size: 1rem; width: 20px; text-align: center; }
-.note-content { flex: 1; min-width: 0; }
-.note-title {
-    font-weight: 600;
-    margin-bottom: 4px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.note-preview {
-    font-size: 0.8rem;
-    opacity: 0.7;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.note-date { font-size: 0.7rem; opacity: 0.5; margin-top: 4px; }
-.main-file-indicator { color: var(--success-color); font-size: 0.8rem; }
-
-/* --- Componentes del editor de código --- */
-.editor-area {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+.container.notes-app .editor-area {
     background: var(--bg-light);
     border-radius: var(--border-radius);
-    overflow: hidden;
-    min-width: 0;
 }
-.editor-tabs {
-    display: flex;
-    background: var(--bg-white);
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-    padding: 0 15px;
-}
-.editor-tab {
-    padding: 12px 20px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    border-bottom: 3px solid transparent;
-    transition: var(--transition);
-    font-weight: 500;
-    color: var(--text-light);
-}
-.editor-tab.active {
-    color: var(--primary-color);
-    border-bottom-color: var(--primary-color);
-    background: rgba(67, 97, 238, 0.05);
-}
-.editor-container { flex: 1; display: flex; overflow: hidden; }
-.editor-wrapper { flex: 1; display: flex; flex-direction: column; position: relative; }
-.editor-header {
-    padding: 10px 15px;
-    background: var(--bg-white);
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.editor-type { font-size: 0.8rem; color: var(--text-light); font-weight: 500; }
-.editor-main { flex: 1; display: flex; overflow: hidden; }
-.line-numbers {
-    background: var(--bg-light);
-    color: var(--text-light);
-    padding: 15px 8px;
-    text-align: right;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    user-select: none;
-    overflow-y: auto;
-    min-width: 50px;
-}
-.code-editor {
-    flex: 1;
-    border: none;
-    padding: 15px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9rem;
-    line-height: 1.4;
-    resize: none;
-    background: var(--bg-white);
-    color: var(--text-dark);
-    outline: none;
-    tab-size: 4;
-}
-
-/* --- Componentes de la vista previa --- */
-.preview-sidebar {
+.container.notes-app .preview-panel {
     width: 400px;
     background: var(--bg-light);
     border-radius: var(--border-radius);
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    overflow: hidden;
+    border-left: none;
 }
-.preview-header {
-    padding: 15px 20px;
-    background: var(--bg-white);
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.preview-title { font-weight: 600; color: var(--text-dark); }
-.preview-actions { display: flex; gap: 8px; }
-.preview-btn {
-    padding: 6px 12px;
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.8rem;
-    transition: var(--transition);
-}
-.preview-btn:hover { background: var(--primary-dark); }
-.preview-frame { flex: 1; border: none; background: white; }
-
-/* --- Otros componentes de Mizu Notes --- */
-.search-box { position: relative; margin-bottom: 15px; }
-.search-input {
-    width: 100%;
-    padding: 10px 35px 10px 12px;
-    border: 2px solid #e0e0e0;
-    border-radius: var(--border-radius);
-    font-size: 0.9rem;
-    transition: var(--transition);
-}
-.search-input:focus { outline: none; border-color: var(--primary-color); }
-.search-icon {
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-light);
-}
-.stats {
+.container.notes-app .subtitle { margin-bottom: 25px; }
+.container.notes-app .search-box { margin-bottom: 15px; }
+.container.notes-app .stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
@@ -335,33 +497,20 @@ h1 {
     padding-top: 20px;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
-.stat-item { text-align: center; }
-.stat-number { font-size: 1.2rem; font-weight: 700; color: var(--primary-color); }
-.stat-label { font-size: 0.7rem; color: var(--text-light); }
-.auto-save {
-    font-size: 0.8rem;
-    color: var(--success-color);
-    opacity: 0;
-    transition: var(--transition);
-}
-.auto-save.visible { opacity: 1; }
-.file-type-selector { display: flex; gap: 5px; margin-top: 10px; }
-.file-type-btn {
-    padding: 4px 8px;
-    border: 1px solid var(--primary-color);
-    background: transparent;
-    color: var(--primary-color);
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.7rem;
-    transition: var(--transition);
-}
-.file-type-btn.active { background: var(--primary-color); color: white; }
+.container.notes-app .stat-item { text-align: center; }
+.container.notes-app .stat-number { font-size: 1.2rem; font-weight: 700; color: var(--primary-color); }
+.container.notes-app .stat-label { font-size: 0.7rem; color: var(--text-light); }
+.container.notes-app .file-type-selector { display: flex; gap: 5px; margin-top: 10px; }
 
 /* -------------------------------------------------------------------
-   3. ESTILOS ESPECÍFICOS DE MIZU KEYGEN (App 2)
+   5. ESTILOS ESPECÍFICOS DE MIZU KEYGEN (App 2)
    ------------------------------------------------------------------- */
 /* --- Componentes de la calculadora --- */
+.container.keygen-app {
+    padding: 30px;
+    max-width: 500px;
+    height: auto;
+}
 .calculator-display {
     background-color: var(--bg-light);
     border-radius: var(--border-radius);
@@ -436,17 +585,22 @@ h1 {
 .calc-btn.pressed { animation: buttonPress 0.1s ease; }
 
 /* -------------------------------------------------------------------
-   4. ESTILOS ESPECÍFICOS DE LA APP DE HOJA DE CÁLCULO (App 3)
+   6. ESTILOS ESPECÍFICOS DE LA APP DE HOJA DE CÁLCULO (App 3)
    ------------------------------------------------------------------- */
 /* Nota: Esta app usa una paleta y estructura diferente. Se incluye tal cual. */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
-body.calculator-app { /* Clase para aplicar este tema específico */
+body.calculator-app {
     font-family: 'Inter', sans-serif;
     background-color: #f3f4f6;
     display: block; /* Reset de flex */
     padding: 0;
 }
-.container.calculator-app { max-width: 90%; padding: 0; box-shadow: none; }
+.container.calculator-app {
+    max-width: 90%;
+    padding: 0;
+    box-shadow: none;
+    height: auto;
+}
 .table-container {
     overflow: auto;
     border-radius: 12px;
@@ -459,7 +613,7 @@ table {
     width: 100%;
     background-color: white;
 }
-thead th, thead td {
+thead th,thead td {
     background-color: #f9fafb;
     font-weight: 600;
     position: sticky;
@@ -610,23 +764,25 @@ th, td {
 }
 
 /* -------------------------------------------------------------------
-   5. ESTILOS ESPECÍFICOS DE MIZU CODER (App 4)
+   7. ESTILOS ESPECÍFICOS DE MIZU CODER (App 4)
    ------------------------------------------------------------------- */
-/* --- Componentes del encabezado --- */
-.header {
+.container.coder-app {
+    padding: 10px;
+    gap: 10px;
+    max-width: 100%;
+    height: calc(100vh - 73px);
+}
+.container.coder-app .header {
     background-color: var(--bg-white);
     color: var(--text-dark);
     padding: 15px 20px;
     text-align: center;
     font-size: 1.5rem;
     font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     box-shadow: var(--shadow);
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
-.header h1 {
+.container.coder-app .header h1 {
     flex-grow: 1;
     margin-right: 1rem;
     background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
@@ -634,8 +790,8 @@ th, td {
     background-clip: text;
     color: transparent;
 }
-.header-controls { display: flex; align-items: center; gap: 1rem; }
-.progress-bar {
+.container.coder-app .header-controls { display: flex; align-items: center; gap: 1rem; }
+.container.coder-app .progress-bar {
     width: 200px;
     -webkit-appearance: none;
     appearance: none;
@@ -645,7 +801,7 @@ th, td {
     cursor: pointer;
     outline: none;
 }
-.progress-bar::-webkit-slider-thumb {
+.container.coder-app .progress-bar::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 16px;
@@ -655,11 +811,11 @@ th, td {
     border: 2px solid var(--primary-dark);
     transition: var(--transition);
 }
-.progress-bar::-webkit-slider-thumb:hover {
+.container.coder-app .progress-bar::-webkit-slider-thumb:hover {
     background-color: var(--primary-dark);
     transform: scale(1.1);
 }
-.progress-bar::-moz-range-thumb {
+.container.coder-app .progress-bar::-moz-range-thumb {
     width: 16px;
     height: 16px;
     background-color: var(--primary-color);
@@ -668,11 +824,11 @@ th, td {
     cursor: pointer;
     transition: var(--transition);
 }
-.progress-bar::-moz-range-thumb:hover {
+.container.coder-app .progress-bar::-moz-range-thumb:hover {
     background-color: var(--primary-dark);
     transform: scale(1.1);
 }
-.action-button {
+.container.coder-app .action-button {
     padding: 8px 16px;
     background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
     color: var(--bg-white);
@@ -684,26 +840,26 @@ th, td {
     font-weight: 600;
     box-shadow: 0 2px 5px rgba(67, 97, 238, 0.3);
 }
-.action-button:hover {
+.container.coder-app .action-button:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(67, 97, 238, 0.4);
     background: linear-gradient(135deg, var(--primary-dark), var(--secondary-color));
 }
-.save-indicator {
+.container.coder-app .save-indicator {
     color: var(--text-light);
     font-size: 0.875rem;
     margin-left: 0.5rem;
 }
-.code-mode-selector { display: flex; align-items: center; margin-left: 1rem; gap: 0.5rem; }
-.mode-label { font-size: 0.875rem; color: var(--text-light); }
-.mode-switch {
+.container.coder-app .code-mode-selector { display: flex; align-items: center; margin-left: 1rem; gap: 0.5rem; }
+.container.coder-app .mode-label { font-size: 0.875rem; color: var(--text-light); }
+.container.coder-app .mode-switch {
     position: relative;
     display: inline-block;
     width: 50px;
     height: 24px;
 }
-.mode-switch input { opacity: 0; width: 0; height: 0; }
-.slider {
+.container.coder-app .mode-switch input { opacity: 0; width: 0; height: 0; }
+.container.coder-app .slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -715,7 +871,7 @@ th, td {
     border-radius: 24px;
     border: 2px solid var(--text-light);
 }
-.slider:before {
+.container.coder-app .slider:before {
     position: absolute;
     content: "";
     height: 16px;
@@ -726,27 +882,16 @@ th, td {
     transition: var(--transition);
     border-radius: 50%;
 }
-input:checked + .slider {
+.container.coder-app input:checked + .slider {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
 }
-input:checked + .slider:before {
+.container.coder-app input:checked + .slider:before {
     transform: translateX(26px);
     background-color: white;
 }
 
-/* --- Layout de Mizu Coder --- */
-.container.coder-app {
-    display: flex;
-    flex-grow: 1;
-    overflow: hidden;
-    flex-direction: column;
-    height: calc(100vh - 73px);
-    padding: 10px;
-    gap: 10px;
-    max-width: 100%;
-}
-.editor-container.coder-app {
+.container.coder-app .editor-container {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -756,7 +901,7 @@ input:checked + .slider:before {
     overflow: hidden;
     transition: var(--transition);
 }
-.preview-container.coder-app {
+.container.coder-app .preview-container {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -768,8 +913,8 @@ input:checked + .slider:before {
     box-shadow: var(--shadow);
     transition: var(--transition);
 }
-.preview-frame { width: 100%; flex-grow: 1; border: none; background-color: white; }
-.debug-info {
+.container.coder-app .preview-frame { width: 100%; flex-grow: 1; border: none; background-color: white; }
+.container.coder-app .debug-info {
     position: absolute;
     bottom: 10px;
     right: 10px;
@@ -780,7 +925,7 @@ input:checked + .slider:before {
     font-size: 12px;
     z-index: 1000;
 }
-.separated-mode-indicator {
+.container.coder-app .separated-mode-indicator {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -860,8 +1005,13 @@ input:checked + .slider:before {
 }
 
 /* -------------------------------------------------------------------
-   6. ESTILOS ESPECÍFICOS DEL GENERADOR DE CONTRASEÑAS (App 5)
+   8. ESTILOS ESPECÍFICOS DEL GENERADOR DE CONTRASEÑAS (App 5)
    ------------------------------------------------------------------- */
+.container.password-app {
+    padding: 30px;
+    max-width: 500px;
+    height: auto;
+}
 /* --- Componentes de contraseña y seguridad --- */
 .password-container {
     display: flex;
@@ -1109,8 +1259,13 @@ input:checked + .checkbox-slider:before { transform: translateX(24px); }
 }
 
 /* -------------------------------------------------------------------
-   7. ESTILOS ESPECÍFICOS DE LA APP DE TAREAS (App 6)
+   9. ESTILOS ESPECÍFICOS DE LA APP DE TAREAS (App 6)
    ------------------------------------------------------------------- */
+.container.todo-app {
+    padding: 30px;
+    max-width: 500px;
+    height: auto;
+}
 /* --- Componentes de la lista de tareas --- */
 .input-container { display: flex; gap: 12px; margin-bottom: 25px; }
 #taskInput {
@@ -1280,8 +1435,13 @@ input:checked + .checkbox-slider:before { transform: translateX(24px); }
 .action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
 /* -------------------------------------------------------------------
-   8. ESTILOS ESPECÍFICOS DEL CONVERTIDOR DE UNIDADES (App 7)
+   10. ESTILOS ESPECÍFICOS DEL CONVERTIDOR DE UNIDADES (App 7)
    ------------------------------------------------------------------- */
+.container.converter-app {
+    padding: 30px;
+    max-width: 500px;
+    height: auto;
+}
 /* --- Componentes del selector de categoría --- */
 .category-selector { margin-bottom: 25px; }
 .category-buttons {
@@ -1459,7 +1619,7 @@ input:checked + .checkbox-slider:before { transform: translateX(24px); }
 .result-updated { animation: resultUpdate 0.3s ease; }
 
 /* -------------------------------------------------------------------
-   9. ESTILOS ESPECÍFICOS DE LA APP DE PROCESAMIENTO DE TEXTO (App 8)
+   11. ESTILOS ESPECÍFICOS DE LA APP DE PROCESAMIENTO DE TEXTO (App 8)
    ------------------------------------------------------------------- */
 /* Nota: Esta app usa una convención de nombres diferente. Se incluye tal cual. */
 body.text-processor-app {
@@ -1477,6 +1637,7 @@ body.text-processor-app {
     border-radius: 12px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     padding: 30px;
+    height: auto;
 }
 header.text-processor-app {
     text-align: center;
@@ -1606,8 +1767,13 @@ footer.text-processor-app {
 }
 
 /* -------------------------------------------------------------------
-   10. ESTILOS ESPECÍFICOS DEL CALENDARIO (App 9)
+   12. ESTILOS ESPECÍFICOS DEL CALENDARIO (App 9)
    ------------------------------------------------------------------- */
+.container.calendar-app {
+    padding: 30px;
+    max-width: 1000px;
+    height: auto;
+}
 /* --- Componentes de los controles del calendario --- */
 .calendar-controls {
     display: flex;
@@ -1892,7 +2058,7 @@ footer.text-processor-app {
 }
 
 /* -------------------------------------------------------------------
-   11. UTILIDADES Y ANIMACIONES GLOBALES
+   13. UTILIDADES Y ANIMACIONES GLOBALES
    ------------------------------------------------------------------- */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
@@ -1951,7 +2117,7 @@ input:focus, button:focus, textarea:focus, select:focus {
 ::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
 
 /* -------------------------------------------------------------------
-   12. DISEÑO RESPONSIVO GLOBAL
+   14. DISEÑO RESPONSIVO GLOBAL
    ------------------------------------------------------------------- */
 @media (max-width: 1200px) {
     .container { height: auto; min-height: 90vh; }
@@ -1988,4 +2154,3 @@ input:focus, button:focus, textarea:focus, select:focus {
 @media (max-width: 320px) {
     .buttons button { flex: 1 1 100%; }
 }
-
