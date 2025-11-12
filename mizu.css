@@ -2154,3 +2154,334 @@ input:focus, button:focus, textarea:focus, select:focus {
 @media (max-width: 320px) {
     .buttons button { flex: 1 1 100%; }
 }
+/* ===================================================================
+   ESTILOS ESPECÍFICOS PARA LA APP MIZU NOTES
+   Añadir la clase "notes-app" al <body> de la aplicación para activarlos.
+   =================================================================== */
+
+body.notes-app {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: var(--text-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    line-height: 1.6;
+}
+
+body.notes-app .container {
+    background-color: var(--bg-white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 30px;
+    width: 100%;
+    max-width: 800px;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition);
+}
+
+body.notes-app .toolbar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+body.notes-app .toolbar-btn {
+    padding: 10px 16px;
+    border: 2px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+body.notes-app .toolbar-btn:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+body.notes-app .toolbar-btn.primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+body.notes-app .toolbar-btn.primary:hover {
+    background: var(--primary-dark);
+}
+
+body.notes-app .toolbar-btn.danger {
+    border-color: var(--error-color);
+    color: var(--error-color);
+}
+
+body.notes-app .toolbar-btn.danger:hover {
+    background: var(--error-color);
+    color: white;
+}
+
+body.notes-app .toolbar-btn.success {
+    border-color: var(--success-color);
+    color: var(--success-color);
+}
+
+body.notes-app .toolbar-btn.success:hover {
+    background: var(--success-color);
+    color: white;
+}
+
+body.notes-app .status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+body.notes-app .status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--success-color);
+    animation: pulse 2s infinite;
+}
+
+body.notes-app .status-dot.offline {
+    background: var(--error-color);
+}
+
+body.notes-app .status-dot.syncing {
+    background: var(--warning-color);
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+body.notes-app .notes-sidebar {
+    width: 250px;
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+body.notes-app .notes-list {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+
+body.notes-app .note-item {
+    padding: 12px;
+    border-radius: var(--border-radius);
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    border-left: 4px solid transparent;
+}
+
+body.notes-app .note-item:hover {
+    background: rgba(67, 97, 238, 0.1);
+}
+
+body.notes-app .note-item.active {
+    background: var(--primary-color);
+    color: white;
+    border-left-color: var(--secondary-color);
+}
+
+body.notes-app .note-title {
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+body.notes-app .note-preview {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+body.notes-app .note-date {
+    font-size: 0.7rem;
+    opacity: 0.5;
+    margin-top: 4px;
+}
+
+body.notes-app .main-content {
+    flex: 1;
+    display: flex;
+    gap: 20px;
+    min-height: 0;
+}
+
+body.notes-app .editor-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    padding: 25px;
+}
+
+body.notes-app .note-title-input,
+body.notes-app .note-content {
+    background: none;
+    border: none;
+    resize: none;
+    font-family: inherit;
+    padding: 10px;
+    border-radius: var(--border-radius);
+}
+
+body.notes-app .note-title-input:focus,
+body.notes-app .note-content:focus {
+    outline: none;
+    background: white;
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+body.notes-app .note-title-input {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+body.notes-app .note-content {
+    flex: 1;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-dark);
+}
+
+body.notes-app .note-info {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    font-size: 0.8rem;
+    color: var(--text-light);
+    display: flex;
+    justify-content: space-between;
+}
+
+body.notes-app .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+body.notes-app .stat-item {
+    text-align: center;
+}
+
+body.notes-app .stat-number {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+body.notes-app .stat-label {
+    font-size: 0.7rem;
+    color: var(--text-light);
+}
+
+body.notes-app .search-box {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+body.notes-app .search-input {
+    width: 100%;
+    padding: 10px 35px 10px 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+body.notes-app .search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+body.notes-app .search-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+}
+
+body.notes-app #messageBox {
+    margin-top: 20px;
+    padding: 12px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    font-weight: 500;
+    display: none;
+}
+
+body.notes-app .message-success {
+    background-color: rgba(75, 181, 67, 0.1);
+    color: var(--success-color);
+    display: block;
+}
+
+body.notes-app .message-error {
+    background-color: rgba(230, 57, 70, 0.1);
+    color: var(--error-color);
+    display: block;
+}
+
+body.notes-app .message-warning {
+    background-color: rgba(255, 158, 0, 0.1);
+    color: var(--warning-color);
+    display: block;
+}
+
+body.notes-app .auto-save {
+    font-size: 0.8rem;
+    color: var(--success-color);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+body.notes-app .auto-save.visible {
+    opacity: 1;
+}
+
+body.notes-app .empty-state {
+    text-align: center;
+    color: var(--text-light);
+    padding: 40px 20px;
+}
+
+body.notes-app .empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}
